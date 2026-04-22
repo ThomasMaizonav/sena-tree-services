@@ -1,0 +1,131 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Sena's Tree Services Brand Colors */
+  --primary-black: #0A0A0A;
+  --luxury-charcoal: #1A1A1A;
+  --leaf-green: #4A7C2F;
+  --forest-shadow: #2E5A1C;
+  --spring-leaf: #6BA33A;
+  --frost-green: #D4EABC;
+  --pure-white: #FFFFFF;
+  --warm-off-white: #F5F5F0;
+  --muted-gold: #B8A060;
+  
+  /* Semantic tokens */
+  --background: #0A0A0A;
+  --foreground: #FFFFFF;
+  --card: #1A1A1A;
+  --card-foreground: #FFFFFF;
+  --popover: #1A1A1A;
+  --popover-foreground: #FFFFFF;
+  --primary: #4A7C2F;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F5F0;
+  --secondary-foreground: #0A0A0A;
+  --muted: #1A1A1A;
+  --muted-foreground: #9CA3AF;
+  --accent: #6BA33A;
+  --accent-foreground: #FFFFFF;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #4A7C2F;
+  --input: #1A1A1A;
+  --ring: #4A7C2F;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-mono: var(--font-montserrat), 'Montserrat', system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Green shadows only */
+.shadow-green {
+  box-shadow: 0 8px 32px rgba(46, 90, 28, 0.25);
+}
+
+.shadow-green-lg {
+  box-shadow: 0 12px 40px rgba(46, 90, 28, 0.3);
+}
+
+.shadow-green-hover {
+  box-shadow: 0 16px 48px rgba(74, 124, 47, 0.35);
+}
+
+/* Focus styles with green glow */
+.focus-green:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 124, 47, 0.4);
+}
