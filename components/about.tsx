@@ -1,9 +1,4 @@
-const stats = [
-  { value: "10+", label: "Years", sublabel: "In Business" },
-  { value: "500+", label: "Properties", sublabel: "Serviced" },
-  { value: "5-Star", label: "Average", sublabel: "Rating" },
-  { value: "Same-Day", label: "Quotes", sublabel: "Available" },
-]
+import Image from "next/image"
 
 interface AboutProps {
   isVisible?: boolean
@@ -16,7 +11,7 @@ export function About({ isVisible }: AboutProps) {
       className="py-20 lg:py-28 bg-[#F5F5F0]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
           {/* Text Content */}
           <div className={`${isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
             <span className="text-[#4A7C2F] font-mono uppercase tracking-widest text-sm font-semibold mb-4 block">
@@ -43,24 +38,23 @@ export function About({ isVisible }: AboutProps) {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className={`grid grid-cols-2 gap-4 ${isVisible ? "animate-fade-in-up" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="bg-[#1A1A1A] p-6 sm:p-8 rounded-xl border-t-4 border-[#4A7C2F] shadow-green"
-              >
-                <div className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#4A7C2F] font-bold mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-white/60 text-sm uppercase tracking-wide">
-                  {stat.label}
-                </div>
-                <div className="text-white/40 text-xs uppercase tracking-wide">
-                  {stat.sublabel}
-                </div>
+          {/* About Image */}
+          <div className={`${isVisible ? "animate-fade-in-up" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
+            <div className="w-full max-w-[330px] sm:max-w-[380px] lg:max-w-[360px] mx-auto lg:mx-0 lg:ml-auto bg-[#1A1A1A] p-3 rounded-[24px] border border-[#4A7C2F]/30 shadow-green-lg">
+              <div className="relative overflow-hidden rounded-[18px]">
+                <Image
+                  src="/images/hero-1.jpg"
+                  alt="Sena's Tree Services climber performing safe tree work"
+                  width={1200}
+                  height={1600}
+                  className="w-full h-auto object-cover"
+                />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0A0A0A]/75 to-transparent" />
               </div>
-            ))}
+              <p className="text-[#F5F5F0]/80 text-xs sm:text-sm mt-2.5 px-1">
+                Real job site photo from Sena&apos;s Tree Services in action.
+              </p>
+            </div>
           </div>
         </div>
       </div>

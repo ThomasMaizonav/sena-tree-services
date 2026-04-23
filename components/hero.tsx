@@ -5,23 +5,23 @@ import Image from "next/image"
 
 const heroImages = [
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/437b6b89-46a5-4519-92bb-668e6b3c02a9-hKZ5KWuy70W111IWvKBbPm5uoqA2Bg.jpg",
+    src: "/images/hero-1.jpg",
     alt: "Professional arborist climbing tree for safe tree removal in Richmond VA",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8BD7E158-248F-4ECC-9063-B306B8951014-xJtG2VBIntfyEEbLA8fzw4oZAa90wL.jpg",
+    src: "/images/hero-2.jpg",
     alt: "Wood chipper and equipment for land clearing services in Henrico",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/FE05905C-5261-4623-AA37-BC00DAC78ECB-zmUebpfgR73ng3Ils1SXvu9ATwn7Z3.jpg",
+    src: "/images/hero-3.jpg",
     alt: "Beautiful landscaping with trimmed hedges in Midlothian VA",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/f990d840-62b5-4916-8e6f-39d86c6cf1ac-whXHtsYK3j48hdJKUkbvOeFudaZrxv.jpg",
+    src: "/images/hero-4.jpg",
     alt: "Completed deck restoration project in Short Pump Virginia",
   },
   {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/b0fa7c87-62e3-428e-835a-8cd62b28baf3-c8Dg0OHX4Jj12naVeDBWalsevDrAJ3.jpg",
+    src: "/images/hero-5.jpg",
     alt: "Deck repair and restoration work in progress",
   },
 ]

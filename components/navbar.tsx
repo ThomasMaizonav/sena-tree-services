@@ -36,7 +36,7 @@ export function Navbar() {
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3" aria-label="Sena's Tree Services Home">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/83783a2f-f738-4ce2-836a-256b5a70937c-GP2K9BmlxAVIo2cp5p1PnTL1HYfin0.jpg"
+              src="/images/logo.jpg"
               alt="Sena's Tree Services Logo"
               width={48}
               height={48}

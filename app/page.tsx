@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
 import { Services } from "@/components/services"
+import { ProjectGallery } from "@/components/project-gallery"
 import { WhyChooseUs } from "@/components/why-choose-us"
 import { ServiceAreas } from "@/components/service-areas"
 import { Testimonials } from "@/components/testimonials"
@@ -41,6 +42,7 @@ export default function Home() {
       <Hero />
       <About isVisible={isVisible["about"]} />
       <Services isVisible={isVisible["services"]} />
+      <ProjectGallery />
       <WhyChooseUs isVisible={isVisible["why-choose-us"]} />
       <ServiceAreas isVisible={isVisible["areas"]} />
       <Testimonials isVisible={isVisible["testimonials"]} />

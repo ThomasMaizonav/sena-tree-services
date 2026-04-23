@@ -24,24 +24,11 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Sena's Tree Services | Tree Removal & Trimming in Richmond, Henrico, Midlothian & Short Pump, VA",
   description: "Sena's Tree Services offers expert tree removal, trimming, stump grinding, and emergency services in Richmond, Henrico, Midlothian, Short Pump, and Central Virginia. Licensed, insured, and trusted for 10+ years. Free estimates!",
-  generator: 'v0.app',
   keywords: ['tree removal Richmond VA', 'tree trimming Henrico', 'stump grinding Midlothian', 'emergency tree service Short Pump', 'tree service near me Richmond', 'arborist Richmond Virginia', 'land clearing Chesterfield VA', 'affordable tree removal Central Virginia'],
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: [{ url: '/favicon.jpg', type: 'image/jpeg' }],
+    shortcut: '/favicon.jpg',
+    apple: '/favicon.jpg',
   },
 }
 

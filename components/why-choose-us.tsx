@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const features = [
   {
     title: "Fully Licensed & Insured",
@@ -35,61 +37,16 @@ export function WhyChooseUs({ isVisible }: WhyChooseUsProps) {
     <section id="why-choose-us" className="py-20 lg:py-28 bg-[#F5F5F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Decorative Tree Illustration */}
+          {/* Real Tree Photo */}
           <div className={`hidden lg:flex items-center justify-center ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
-            <svg
-              viewBox="0 0 400 500"
-              className="w-full max-w-md h-auto"
-              fill="none"
-            >
-              {/* Tree trunk */}
-              <path
-                d="M200 500 L200 280 C200 260 180 240 200 220"
-                stroke="#2E5A1C"
-                strokeWidth="20"
-                strokeLinecap="round"
+            <div className="relative w-full max-w-md aspect-[4/5] overflow-hidden rounded-2xl border border-[#4A7C2F]/25 shadow-green-lg">
+              <Image
+                src="/images/gallery/gallery10.png"
+                alt="Real tree work in progress by Sena's Tree Services"
+                fill
+                className="object-cover"
               />
-              {/* Branches */}
-              <path
-                d="M200 280 C150 260 100 280 80 250"
-                stroke="#2E5A1C"
-                strokeWidth="8"
-                strokeLinecap="round"
-              />
-              <path
-                d="M200 260 C250 240 300 260 320 230"
-                stroke="#2E5A1C"
-                strokeWidth="8"
-                strokeLinecap="round"
-              />
-              <path
-                d="M200 220 C160 200 140 180 120 150"
-                stroke="#2E5A1C"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M200 220 C240 200 260 180 280 150"
-                stroke="#2E5A1C"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              {/* Foliage circles */}
-              <circle cx="80" cy="230" r="50" fill="#4A7C2F" opacity="0.9" />
-              <circle cx="120" cy="180" r="45" fill="#6BA33A" opacity="0.9" />
-              <circle cx="150" cy="130" r="40" fill="#4A7C2F" opacity="0.9" />
-              <circle cx="200" cy="100" r="55" fill="#6BA33A" opacity="0.9" />
-              <circle cx="250" cy="130" r="40" fill="#4A7C2F" opacity="0.9" />
-              <circle cx="280" cy="180" r="45" fill="#6BA33A" opacity="0.9" />
-              <circle cx="320" cy="230" r="50" fill="#4A7C2F" opacity="0.9" />
-              <circle cx="170" cy="160" r="35" fill="#D4EABC" opacity="0.6" />
-              <circle cx="230" cy="160" r="35" fill="#D4EABC" opacity="0.6" />
-              <circle cx="200" cy="200" r="30" fill="#D4EABC" opacity="0.6" />
-              {/* Gold accent leaves */}
-              <circle cx="100" cy="200" r="8" fill="#B8A060" />
-              <circle cx="300" cy="200" r="8" fill="#B8A060" />
-              <circle cx="200" cy="80" r="8" fill="#B8A060" />
-            </svg>
+            </div>
           </div>
 
           {/* Features List */}
