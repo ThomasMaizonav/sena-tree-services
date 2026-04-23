@@ -21,6 +21,29 @@ npm run dev
 
 Abra `http://localhost:3000`.
 
+## Formulário de contato
+O formulário agora envia os dados direto para o `FormSubmit` via AJAX, sem backend SMTP próprio.
+
+Campos enviados no e-mail:
+- `name`
+- `phone`
+- `email`
+- `area`
+- `service`
+- `message`
+
+Fluxo para ativar:
+1. Publicar o site.
+2. Fazer o primeiro envio de teste pelo formulário.
+3. O `FormSubmit` envia um e-mail de confirmação para `info@senastreeservices.com`.
+4. O cliente clica no link desse e-mail.
+5. Depois disso, os próximos leads passam a chegar normalmente.
+
+Notas:
+- Não precisa senha do e-mail do cliente.
+- Não precisa acesso à Hostinger nem DNS.
+- Se o cliente não confirmar o primeiro e-mail, o formulário não fica ativo.
+
 ## Build de produção
 ```bash
 npm run build

@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 
+const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/info@senastreeservices.com"
+
 const services = [
   "Tree Removal",
   "Tree Trimming & Pruning",
@@ -15,21 +17,78 @@ interface ContactProps {
   isVisible?: boolean
 }
 
-export function Contact({ isVisible }: ContactProps) {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    area: "",
-    service: "",
-    message: "",
-  })
+const initialFormData = {
+  name: "",
+  phone: "",
+  email: "",
+  area: "",
+  service: "",
+  message: "",
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
+export function Contact({ isVisible }: ContactProps) {
+  const [formData, setFormData] = useState(initialFormData)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState("")
+  const [submitError, setSubmitError] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
-    alert("Thank you! We'll be in touch within 2 hours during business hours.")
+    setIsSubmitting(true)
+    setSubmitError(false)
+    setSubmitMessage("")
+
+    try {
+      const response = await fetch(FORMSUBMIT_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          _subject: `New estimate request from ${formData.name}`,
+          _replyto: formData.email,
+          _template: "table",
+        }),
+      })
+
+      const payload = (await response.json().catch(() => null)) as
+        | {
+            error?: string
+            errors?: Record<string, string[]>
+            message?: string
+          }
+        | null
+
+      if (!response.ok) {
+        const validationErrors = payload?.errors
+          ? Object.values(payload.errors)
+              .flat()
+              .join(" ")
+          : ""
+
+        throw new Error(
+          payload?.error ||
+            validationErrors ||
+            "We couldn't send your request. Please call us or try again in a few minutes.",
+        )
+      }
+
+      setFormData(initialFormData)
+      setSubmitMessage(
+        payload?.message || "Thank you! We'll be in touch within 2 hours during business hours.",
+      )
+    } catch (error) {
+      setSubmitError(true)
+      setSubmitMessage(
+        error instanceof Error
+          ? error.message
+          : "We couldn't send your request. Please call us or try again in a few minutes.",
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -62,6 +121,8 @@ export function Contact({ isVisible }: ContactProps) {
         {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
+          action={FORMSUBMIT_ENDPOINT}
+          method="POST"
           className={`bg-[#1A1A1A] rounded-2xl p-6 sm:p-10 shadow-green-lg ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
           style={{ animationDelay: "0.2s" }}
         >
@@ -73,6 +134,7 @@ export function Contact({ isVisible }: ContactProps) {
               <input
                 type="text"
                 id="name"
+                name="name"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -87,6 +149,7 @@ export function Contact({ isVisible }: ContactProps) {
               <input
                 type="tel"
                 id="phone"
+                name="phone"
                 required
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -104,6 +167,7 @@ export function Contact({ isVisible }: ContactProps) {
               <input
                 type="email"
                 id="email"
+                name="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -118,6 +182,7 @@ export function Contact({ isVisible }: ContactProps) {
               <input
                 type="text"
                 id="area"
+                name="area"
                 value={formData.area}
                 onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                 className="w-full bg-[#0A0A0A] border border-[#4A7C2F]/50 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-[#4A7C2F] focus:ring-2 focus:ring-[#4A7C2F]/20 transition-all"
@@ -132,6 +197,7 @@ export function Contact({ isVisible }: ContactProps) {
             </label>
             <select
               id="service"
+              name="service"
               required
               value={formData.service}
               onChange={(e) => setFormData({ ...formData, service: e.target.value })}
@@ -152,6 +218,7 @@ export function Contact({ isVisible }: ContactProps) {
             </label>
             <textarea
               id="message"
+              name="message"
               rows={4}
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -160,15 +227,29 @@ export function Contact({ isVisible }: ContactProps) {
             />
           </div>
 
+          <input type="hidden" name="_subject" value={`New estimate request from ${formData.name || "website visitor"}`} />
+          <input type="hidden" name="_replyto" value={formData.email} />
+          <input type="hidden" name="_template" value="table" />
+
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-[#4A7C2F] hover:bg-[#2E5A1C] text-white py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:scale-[1.01] shadow-green flex items-center justify-center gap-2"
           >
-            Request My Free Estimate
+            {isSubmitting ? "Sending Request..." : "Request My Free Estimate"}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </button>
+
+          {submitMessage ? (
+            <p
+              aria-live="polite"
+              className={`mt-4 text-sm ${submitError ? "text-[#FCA5A5]" : "text-[#A3E635]"}`}
+            >
+              {submitMessage}
+            </p>
+          ) : null}
         </form>
 
         {/* Contact Info Strip */}
