@@ -101,13 +101,22 @@ export function Hero() {
             >
               Get Your Free Estimate
             </a>
-            <a
-              href="#services"
-              className="border-2 border-white text-white hover:bg-white hover:text-[#0A0A0A] px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 text-center"
-              aria-label="View Our Services"
-            >
-              View Our Services
-            </a>
+            <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+              <a
+                href="#services"
+                className="border-2 border-white text-white hover:bg-white hover:text-[#0A0A0A] px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 text-center"
+                aria-label="View Our Services"
+              >
+                View Our Services
+              </a>
+              <a
+                href="tel:+18042692932"
+                className="bg-[#6BA33A] border-2 border-[#A6F06D] text-white hover:bg-[#7DC347] px-6 py-4 rounded-lg font-extrabold text-lg tracking-wide transition-all duration-200 hover:scale-[1.05] shadow-green-lg ring-2 ring-[#A6F06D]/60 text-center animate-pulse"
+                aria-label="Call (804) 269-2932"
+              >
+                (804) 269-2932
+              </a>
+            </div>
           </div>
 
           {/* Trust Badges */}
