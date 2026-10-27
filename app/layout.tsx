@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter, Montserrat } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { MetaPixel } from '@/components/meta-pixel'
 import './globals.css'
 
 const playfair = Playfair_Display({ 
@@ -47,6 +48,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${inter.variable} ${montserrat.variable} bg-[#0A0A0A]`}>
       <body className="font-sans antialiased">
         {children}
+        <MetaPixel />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

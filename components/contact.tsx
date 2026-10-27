@@ -2,6 +2,12 @@
 
 import { useState } from "react"
 
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void
+  }
+}
+
 const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/info@senastreeservices.com"
 
 const services = [
@@ -75,6 +81,7 @@ export function Contact({ isVisible }: ContactProps) {
         )
       }
 
+      window.fbq?.("track", "Lead")
       setFormData(initialFormData)
       setSubmitMessage(
         payload?.message || "Thank you! We'll be in touch within 2 hours during business hours.",
