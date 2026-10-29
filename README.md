@@ -35,10 +35,12 @@ Campos enviados no e-mail:
 Configuração necessária na Vercel:
 1. Criar `SMTP_USER` com a conta Gmail autorizada para envio.
 2. Criar a variável secreta `SMTP_PASS` com uma senha de aplicativo do Gmail.
-3. Publicar uma nova implantação para as variáveis entrarem em vigor.
+3. Criar a variável secreta `CRM_WEBHOOK_URL` com o endereço do webhook do CRM.
+4. Publicar uma nova implantação para as variáveis entrarem em vigor.
 
 Notas:
 - Não é necessário armazenar a senha da caixa de e-mail no site.
+- O webhook do CRM é chamado no servidor e nunca é exposto no navegador.
 - Os registros MX da Hostinger devem permanecer para preservar a caixa `info@senastreeservices.com`.
 
 ## Build de produção

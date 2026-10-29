@@ -12,6 +12,15 @@ type ContactForm = {
   message?: unknown
 }
 
+type Lead = {
+  name: string
+  phone: string
+  email: string
+  area: string
+  service: string
+  message: string
+}
+
 function text(value: unknown) {
   return typeof value === "string" ? value.trim() : ""
 }
@@ -26,6 +35,47 @@ function escapeHtml(value: string) {
   }
 
   return value.replace(/[&<>"']/g, (character) => entities[character] ?? character)
+}
+
+async function sendLeadToCrm(lead: Lead) {
+  const webhookUrl = process.env.CRM_WEBHOOK_URL
+
+  if (!webhookUrl) {
+    throw new Error("CRM_WEBHOOK_URL is not configured")
+  }
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 15_000)
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: lead.name,
+        phone: lead.phone,
+        email: lead.email,
+        area: lead.area,
+        service: lead.service,
+        message: lead.message,
+        source: "Sena Tree Services website",
+        source_url: "https://www.senastreeservices.com",
+      }),
+      cache: "no-store",
+      signal: controller.signal,
+    })
+
+    const responseBody = await response.text()
+
+    if (!response.ok) {
+      throw new Error(`CRM webhook returned ${response.status}: ${responseBody.slice(0, 300)}`)
+    }
+  } finally {
+    clearTimeout(timeout)
+  }
 }
 
 export async function POST(request: Request) {
@@ -43,6 +93,15 @@ export async function POST(request: Request) {
   const area = text(form.area)
   const service = text(form.service)
   const message = text(form.message)
+
+  const lead: Lead = {
+    name,
+    phone,
+    email,
+    area,
+    service,
+    message,
+  }
 
   if (!name || !phone || !email || !service) {
     return NextResponse.json(
@@ -81,7 +140,7 @@ export async function POST(request: Request) {
       socketTimeout: 15_000,
     })
 
-    await transporter.sendMail({
+    const emailPromise = transporter.sendMail({
       from: smtpUser,
       to: RECIPIENT_EMAIL,
       replyTo: email,
@@ -104,6 +163,22 @@ export async function POST(request: Request) {
         <p><strong>Message:</strong><br>${escapeHtml(message || "Not provided").replace(/\n/g, "<br>")}</p>
       `,
     })
+
+    const crmPromise = sendLeadToCrm(lead)
+    const [emailResult, crmResult] = await Promise.allSettled([emailPromise, crmPromise])
+
+    if (emailResult.status === "rejected") {
+      throw emailResult.reason
+    }
+
+    if (crmResult.status === "rejected") {
+      console.error("Unable to send contact request to the CRM webhook", crmResult.reason)
+
+      return NextResponse.json(
+        { error: "Our lead service is temporarily unavailable. Please call us at (804) 269-2932." },
+        { status: 502 },
+      )
+    }
 
     return NextResponse.json({
       message: "Thank you! We'll be in touch soon.",
