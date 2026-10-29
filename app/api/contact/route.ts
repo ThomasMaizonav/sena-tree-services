@@ -81,7 +81,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Sena Tree Services <onboarding@resend.dev>",
+        from: "Sena Tree Services <info@senastreeservices.com>",
         to: ["info@senastreeservices.com"],
         reply_to: email,
         subject: `New estimate request from ${name}`,
