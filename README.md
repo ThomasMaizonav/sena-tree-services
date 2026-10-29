@@ -22,7 +22,7 @@ npm run dev
 Abra `http://localhost:3000`.
 
 ## Formulário de contato
-O formulário envia os dados para a rota `/api/contact` do Next.js. Essa rota envia a solicitação pelo Resend no servidor, mantendo a chave da API fora do navegador e evitando problemas de CORS.
+O formulário envia os dados para a rota `/api/contact` do Next.js. Essa rota envia a solicitação pelo SMTP do Gmail no servidor, mantendo a credencial fora do navegador e evitando problemas de CORS.
 
 Campos enviados no e-mail:
 - `name`
@@ -33,9 +33,9 @@ Campos enviados no e-mail:
 - `message`
 
 Configuração necessária na Vercel:
-1. Criar a variável secreta `RESEND_API_KEY` no ambiente `Production`.
-2. Verificar o domínio `senastreeservices.com` no Resend e adicionar os registros DNS solicitados.
-3. Publicar uma nova implantação para a variável entrar em vigor.
+1. Criar `SMTP_USER` com a conta Gmail autorizada para envio.
+2. Criar a variável secreta `SMTP_PASS` com uma senha de aplicativo do Gmail.
+3. Publicar uma nova implantação para as variáveis entrarem em vigor.
 
 Notas:
 - Não é necessário armazenar a senha da caixa de e-mail no site.

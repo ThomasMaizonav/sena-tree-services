@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
+import nodemailer from "nodemailer"
 
-const RESEND_ENDPOINT = "https://api.resend.com/emails"
-const REQUEST_TIMEOUT_MS = 15_000
+const RECIPIENT_EMAIL = "info@senastreeservices.com"
 
 type ContactForm = {
   name?: unknown
@@ -22,13 +22,10 @@ function escapeHtml(value: string) {
     "<": "&lt;",
     ">": "&gt;",
     "'": "&#39;",
-    '\"': "&quot;",
+    '"': "&quot;",
   }
 
-  return value.replace(
-    /[&<>'\"]/g,
-    (character) => entities[character] ?? character,
-  )
+  return value.replace(/[&<>"']/g, (character) => entities[character] ?? character)
 }
 
 export async function POST(request: Request) {
@@ -58,10 +55,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 })
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY
+  const smtpUser = process.env.SMTP_USER
+  const smtpPass = process.env.SMTP_PASS
 
-  if (!resendApiKey) {
-    console.error("RESEND_API_KEY is not configured")
+  if (!smtpUser || !smtpPass) {
+    console.error("SMTP_USER or SMTP_PASS is not configured")
 
     return NextResponse.json(
       { error: "Our email service is temporarily unavailable. Please call us at (804) 269-2932." },
@@ -69,86 +67,53 @@ export async function POST(request: Request) {
     )
   }
 
-  const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
-
   try {
-    const upstreamResponse = await fetch(RESEND_ENDPOINT, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
       },
-      body: JSON.stringify({
-        from: "Sena Tree Services <info@senastreeservices.com>",
-        to: ["info@senastreeservices.com"],
-        reply_to: email,
-        subject: `New estimate request from ${name}`,
-        text: [
-          `Name: ${name}`,
-          `Phone: ${phone}`,
-          `Email: ${email}`,
-          `Service area / city: ${area || "Not provided"}`,
-          `Service needed: ${service}`,
-          `Message: ${message || "Not provided"}`,
-        ].join("\n"),
-        html: `
-          <h2>New estimate request</h2>
-          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-          <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Service area / city:</strong> ${escapeHtml(area || "Not provided")}</p>
-          <p><strong>Service needed:</strong> ${escapeHtml(service)}</p>
-          <p><strong>Message:</strong><br>${escapeHtml(message || "Not provided").replace(/\n/g, "<br>")}</p>
-        `,
-      }),
-      signal: controller.signal,
-      cache: "no-store",
+      connectionTimeout: 15_000,
+      greetingTimeout: 15_000,
+      socketTimeout: 15_000,
     })
 
-    const responseText = await upstreamResponse.text()
-    let upstreamPayload: { error?: string; errors?: Record<string, string[]>; message?: string } = {}
-
-    try {
-      upstreamPayload = JSON.parse(responseText) as typeof upstreamPayload
-    } catch {
-      // Resend can return plain text for infrastructure errors.
-    }
-
-    if (!upstreamResponse.ok) {
-      const validationErrors = upstreamPayload.errors
-        ? Object.values(upstreamPayload.errors).flat().join(" ")
-        : ""
-
-      console.error("Resend rejected contact request", {
-        status: upstreamResponse.status,
-        response: responseText.slice(0, 500),
-      })
-
-      return NextResponse.json(
-        {
-          error:
-            upstreamPayload.message ||
-            upstreamPayload.error ||
-            validationErrors ||
-            "Our email service is temporarily unavailable. Please call us at (804) 269-2932.",
-        },
-        { status: 502 },
-      )
-    }
+    await transporter.sendMail({
+      from: smtpUser,
+      to: RECIPIENT_EMAIL,
+      replyTo: email,
+      subject: `New estimate request from ${name}`,
+      text: [
+        `Name: ${name}`,
+        `Phone: ${phone}`,
+        `Email: ${email}`,
+        `Service area / city: ${area || "Not provided"}`,
+        `Service needed: ${service}`,
+        `Message: ${message || "Not provided"}`,
+      ].join("\n"),
+      html: `
+        <h2>New estimate request</h2>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Service area / city:</strong> ${escapeHtml(area || "Not provided")}</p>
+        <p><strong>Service needed:</strong> ${escapeHtml(service)}</p>
+        <p><strong>Message:</strong><br>${escapeHtml(message || "Not provided").replace(/\n/g, "<br>")}</p>
+      `,
+    })
 
     return NextResponse.json({
       message: "Thank you! We'll be in touch within 2 hours during business hours.",
     })
   } catch (error) {
-    console.error("Unable to reach Resend", error)
+    console.error("Unable to send contact request through Gmail SMTP", error)
 
     return NextResponse.json(
       { error: "Our email service is temporarily unavailable. Please call us at (804) 269-2932." },
       { status: 502 },
     )
-  } finally {
-    clearTimeout(timeout)
   }
 }
