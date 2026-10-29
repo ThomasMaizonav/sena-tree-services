@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json({
-      message: "Thank you! We'll be in touch within 2 hours during business hours.",
+      message: "Thank you! We'll be in touch soon.",
     })
   } catch (error) {
     console.error("Unable to send contact request through Gmail SMTP", error)

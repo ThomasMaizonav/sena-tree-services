@@ -79,7 +79,7 @@ export function Contact({ isVisible }: ContactProps) {
       window.fbq?.("track", "Lead")
       setFormData(initialFormData)
       setSubmitMessage(
-        payload?.message || "Thank you! We'll be in touch within 2 hours during business hours.",
+        payload?.message || "Thank you! We'll be in touch soon.",
       )
     } catch (error) {
       setSubmitError(true)
@@ -116,7 +116,7 @@ export function Contact({ isVisible }: ContactProps) {
           </h2>
           <p className="text-white/60 text-lg">
             Get your free, no-obligation estimate today. Our team typically
-            responds within 2 hours during business hours.
+            responds as soon as possible during business hours.
           </p>
         </div>
 
