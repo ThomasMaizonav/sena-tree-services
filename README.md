@@ -22,7 +22,7 @@ npm run dev
 Abra `http://localhost:3000`.
 
 ## Formulário de contato
-O formulário envia os dados para a rota `/api/contact` do Next.js. Essa rota encaminha a solicitação para o `FormSubmit` no servidor, evitando dependência de CORS no navegador.
+O formulário envia os dados para a rota `/api/contact` do Next.js. Essa rota envia a solicitação pelo Resend no servidor, mantendo a chave da API fora do navegador e evitando problemas de CORS.
 
 Campos enviados no e-mail:
 - `name`
@@ -32,17 +32,14 @@ Campos enviados no e-mail:
 - `service`
 - `message`
 
-Fluxo para ativar:
-1. Publicar o site.
-2. Fazer o primeiro envio de teste pelo formulário.
-3. O `FormSubmit` envia um e-mail de confirmação para `info@senastreeservices.com`.
-4. O cliente clica no link desse e-mail.
-5. Depois disso, os próximos leads passam a chegar normalmente.
+Configuração necessária na Vercel:
+1. Criar a variável secreta `RESEND_API_KEY` no ambiente `Production`.
+2. Verificar o domínio `senastreeservices.com` no Resend e adicionar os registros DNS solicitados.
+3. Publicar uma nova implantação para a variável entrar em vigor.
 
 Notas:
-- Não precisa senha do e-mail do cliente.
-- Não precisa acesso à Hostinger nem DNS.
-- Se o cliente não confirmar o primeiro e-mail, o formulário não fica ativo.
+- Não é necessário armazenar a senha da caixa de e-mail no site.
+- Os registros MX da Hostinger devem permanecer para preservar a caixa `info@senastreeservices.com`.
 
 ## Build de produção
 ```bash
