@@ -22,7 +22,7 @@ npm run dev
 Abra `http://localhost:3000`.
 
 ## Formulário de contato
-O formulário agora envia os dados direto para o `FormSubmit` via AJAX, sem backend SMTP próprio.
+O formulário envia os dados para a rota `/api/contact` do Next.js. Essa rota encaminha a solicitação para o `FormSubmit` no servidor, evitando dependência de CORS no navegador.
 
 Campos enviados no e-mail:
 - `name`

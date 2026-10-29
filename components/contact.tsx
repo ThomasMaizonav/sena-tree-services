@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/info@senastreeservices.com"
+const CONTACT_ENDPOINT = "/api/contact"
 
 const services = [
   "Tree Removal",
@@ -45,18 +45,13 @@ export function Contact({ isVisible }: ContactProps) {
     setSubmitMessage("")
 
     try {
-      const response = await fetch(FORMSUBMIT_ENDPOINT, {
+      const response = await fetch(CONTACT_ENDPOINT, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          _subject: `New estimate request from ${formData.name}`,
-          _replyto: formData.email,
-          _template: "table",
-        }),
+        body: JSON.stringify(formData),
       })
 
       const payload = (await response.json().catch(() => null)) as
@@ -128,7 +123,7 @@ export function Contact({ isVisible }: ContactProps) {
         {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
-          action={FORMSUBMIT_ENDPOINT}
+          action={CONTACT_ENDPOINT}
           method="POST"
           className={`bg-[#1A1A1A] rounded-2xl p-6 sm:p-10 shadow-green-lg ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
           style={{ animationDelay: "0.2s" }}
