@@ -27,6 +27,7 @@ const initialFormData = {
   name: "",
   phone: "",
   email: "",
+  address: "",
   area: "",
   service: "",
   message: "",
@@ -191,6 +192,23 @@ export function Contact({ isVisible }: ContactProps) {
                 placeholder="e.g. Richmond, Henrico"
               />
             </div>
+          </div>
+
+          <div className="mb-5">
+            <label htmlFor="address" className="block text-white/80 text-sm font-medium mb-2">
+              Street Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              required
+              autoComplete="street-address"
+              value={formData.address}
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              className="w-full bg-[#0A0A0A] border border-[#4A7C2F]/50 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-[#4A7C2F] focus:ring-2 focus:ring-[#4A7C2F]/20 transition-all"
+              placeholder="123 Main Street"
+            />
           </div>
 
           <div className="mb-5">

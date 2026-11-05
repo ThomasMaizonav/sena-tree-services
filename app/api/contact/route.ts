@@ -7,6 +7,7 @@ type ContactForm = {
   name?: unknown
   phone?: unknown
   email?: unknown
+  address?: unknown
   area?: unknown
   service?: unknown
   message?: unknown
@@ -16,6 +17,7 @@ type Lead = {
   name: string
   phone: string
   email: string
+  address: string
   area: string
   service: string
   message: string
@@ -58,6 +60,7 @@ async function sendLeadToCrm(lead: Lead) {
         name: lead.name,
         phone: lead.phone,
         email: lead.email,
+        address: lead.address,
         area: lead.area,
         service: lead.service,
         message: lead.message,
@@ -90,6 +93,7 @@ export async function POST(request: Request) {
   const name = text(form.name)
   const phone = text(form.phone)
   const email = text(form.email)
+  const address = text(form.address)
   const area = text(form.area)
   const service = text(form.service)
   const message = text(form.message)
@@ -98,14 +102,15 @@ export async function POST(request: Request) {
     name,
     phone,
     email,
+    address,
     area,
     service,
     message,
   }
 
-  if (!name || !phone || !email || !service) {
+  if (!name || !phone || !email || !address || !service) {
     return NextResponse.json(
-      { error: "Please complete your name, phone, email, and service." },
+      { error: "Please complete your name, phone, email, address, and service." },
       { status: 400 },
     )
   }
@@ -149,6 +154,7 @@ export async function POST(request: Request) {
         `Name: ${name}`,
         `Phone: ${phone}`,
         `Email: ${email}`,
+        `Street address: ${address}`,
         `Service area / city: ${area || "Not provided"}`,
         `Service needed: ${service}`,
         `Message: ${message || "Not provided"}`,
@@ -158,6 +164,7 @@ export async function POST(request: Request) {
         <p><strong>Name:</strong> ${escapeHtml(name)}</p>
         <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Street address:</strong> ${escapeHtml(address)}</p>
         <p><strong>Service area / city:</strong> ${escapeHtml(area || "Not provided")}</p>
         <p><strong>Service needed:</strong> ${escapeHtml(service)}</p>
         <p><strong>Message:</strong><br>${escapeHtml(message || "Not provided").replace(/\n/g, "<br>")}</p>
